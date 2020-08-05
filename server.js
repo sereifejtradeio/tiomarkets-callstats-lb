@@ -24,7 +24,7 @@ const server = express()
 
         console.log("Request IP: " + request_ip);
 
-        if (request_ip === '107.180.46.203') {
+        if (request_ip === '107.180.108.1') {
             res.sendFile(INDEX);
         } else {
             res.send(403, 'IP not allowed!');
