@@ -4,9 +4,9 @@ class ExecPHP {
      */
     constructor() {
         //local
-        this.phpPath = '/Applications/xampp/xamppfiles/bin/php';
+        //this.phpPath = '/Applications/xampp/xamppfiles/bin/php';
         //production
-        // this.phpPath = '/app/.heroku/php/bin/php';
+        this.phpPath = '/app/.heroku/php/bin/php';
         this.phpFolder = '';
     }
     /**

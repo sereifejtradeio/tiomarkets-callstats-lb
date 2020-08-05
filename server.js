@@ -10,7 +10,7 @@ const INDEX = path.join(__dirname, 'index.html');
 
 const server = express()
     .use((req, res) => {
-        res.header("Access-Control-Allow-Origin", "http://tio-salesleaderboard.com");
+        res.header("Access-Control-Allow-Origin", "http://tio-salescallstats.com");
         res.header(
             "Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization"
         );
