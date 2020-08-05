@@ -2,8 +2,8 @@
   "name": "tiomarkets-salescallstats-lb",
   "version": "1.0.0",
   "engines": {
-    "node": ">=12.2.0",
-    "npm": ">=6.9.0"
+    "node": ">=14.4.0",
+    "npm": ">=6.14.7"
   },
   "main": "server.js",
   "scripts": {
