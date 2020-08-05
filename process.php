@@ -8,7 +8,7 @@ $db = new database(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME, 1);
 
 $agents = array();
 
-$calls_results = $db->getResults("select * from Daily_Calls_report order by Dials desc;", 'ASSOC');
+$calls_results = $db->getResults("select * from daily_calls_report order by Dials desc;", 'ASSOC');
 
 for($i=0; $i < count($calls_results); $i++) {
     $agents[] = array(
