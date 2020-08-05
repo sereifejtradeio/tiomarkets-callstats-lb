@@ -5,7 +5,7 @@ const url = require('url');
 const execPHP = require('./execphp.js')();
 execPHP.phpFolder = './';
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3300;
 const INDEX = path.join(__dirname, 'index.html');
 
 const server = express()
