@@ -1,13 +1,14 @@
 <?php
+
 include_once('includes/config/database.config.php');
 include_once('includes/classes/database.class.php');
 
 // Initialize the database class, and create an object
 $db = new database(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME, 1);
 
-$calls_results = $db->getResults("select * from Daily_Calls_report order by Dials desc;", 'ASSOC');
-
 $agents = array();
+
+$calls_results = $db->getResults("select * from Daily_Calls_report order by Dials desc;", 'ASSOC');
 
 for($i=0; $i < count($calls_results); $i++) {
     $agents[] = array(
