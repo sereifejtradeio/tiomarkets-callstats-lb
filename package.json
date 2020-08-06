@@ -2,12 +2,12 @@
   "name": "tiomarkets-salescallstats-lb",
   "version": "1.0.0",
   "engines": {
-    "node": ">=14.4.0",
-    "npm": ">=6.14.7"
+    "node": ">=12.2.0",
+    "npm": ">=6.9.0"
   },
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -20,13 +20,13 @@
   },
   "homepage": "https://github.com/sereifejtradeio/tiomarkets-callstats-lb.git#readme",
   "dependencies": {
-    "bufferutil": "^4.0.1",
     "exec-php": "0.0.5",
+    "bufferutil": "^4.0.1",
     "express": "^4.17.1",
     "mysql": "^2.18.1",
     "path": "^0.12.7",
     "utf-8-validate": "^5.0.2",
-    "ws": "^7.3.1"
+    "ws": "^7.1.2"
   },
   "devDependencies": {},
   "keywords": [],
