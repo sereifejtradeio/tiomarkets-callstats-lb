@@ -56,7 +56,7 @@ try {
             if ($deletedResults['Successful']) {
                 foreach ($deletedResults['Successful'] as $success) {
                     $success_msg = sprintf("Deleting message succeeded id = %s ", $success['Id']);
-                    echo $success_msg . '<br/>';
+                    echo $success_msg . "\n\n";
                 }
             }
 
