@@ -1,5 +1,5 @@
 const express = require('express');
-const SocketServer = require('ws').Server;
+const { Server } = require('ws');
 const path = require('path');
 const execPHP = require('./execphp.js')();
 execPHP.phpFolder = './';
@@ -31,7 +31,9 @@ const server = express()
     })
     .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
-const wss = new SocketServer({ server });
+
+
+const wss = new Server({ server });
 
 wss.on('connection', (ws) => {
     console.log('Client connected');
