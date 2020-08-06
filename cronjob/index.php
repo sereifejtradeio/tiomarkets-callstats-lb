@@ -38,7 +38,7 @@ try {
         'QueueUrl' => $queueUrl
     ));
 
-    $db->query("DELETE FROM sales_call_stats;", 'ASSOC');
+    $db->query("TRUNCATE sales_call_stats;", 'ASSOC');
     $entries = [];
 
     while ($queueSize['Attributes']['ApproximateNumberOfMessages'] > 0) {
@@ -93,7 +93,7 @@ try {
                         }
                         throw new \RuntimeException("Cannot delete some messages, consult log for more info!");
                     }
-                    
+
                 }
             }
 
