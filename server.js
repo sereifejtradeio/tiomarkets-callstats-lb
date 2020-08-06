@@ -32,7 +32,7 @@ const server = express()
     .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 const wss = new SocketServer({ server });
-
+console.log(wss);
 wss.on('connection', (ws) => {
     console.log('Client connected');
     ws.on('close', () => console.log('Client disconnected'));
