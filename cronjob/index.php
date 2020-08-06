@@ -39,37 +39,13 @@ try {
     ));
 
     $db->query("DELETE FROM sales_call_stats;", 'ASSOC');
+    $entries = [];
 
     while ($queueSize['Attributes']['ApproximateNumberOfMessages'] > 0) {
 
         $messages = $result->get('Messages');
 
         for ($j = 0; $j < count($messages); $j++) {
-
-            $entries = [];
-            foreach ($messages as $key => $value) {
-                $entries[] = ["Id" => $value['MessageId'], "ReceiptHandle" => $value['ReceiptHandle']];
-            }
-
-            $deletedResults = $client->deleteMessageBatch(["QueueUrl" => $queueUrl, "Entries" => $entries]);
-
-            if ($deletedResults['Successful']) {
-                foreach ($deletedResults['Successful'] as $success) {
-                    $success_msg = sprintf("Deleting message succeeded id = %s ", $success['Id']);
-                    echo $success_msg . "\n\n";
-                }
-            }
-
-            if ($deletedResults['Failed']) {
-                foreach ($deletedResults['Failed'] as $failed) {
-                    $myfile = fopen("not_deleted_messages.txt", "w");
-                    $txt = sprintf("Deleting message failed, code = %s, id = %s, msg = %s, senderfault = %s", $failed['Code'], $failed['Id'], $failed['Message'], $failed['SenderFault']);
-                    fwrite($myfile, $txt);
-                    fclose($myfile);
-
-                }
-                throw new \RuntimeException("Cannot delete some messages, consult log for more info!");
-            }
 
             $agents[$j] = json_decode($messages[$j]['Body'], true);
 
@@ -93,6 +69,31 @@ try {
                 
                 if(empty($call_exists)) {
                     $db->query("INSERT INTO sales_call_stats (type, uuid, agent_name, duration, team_names, talk_time, callcenter_uuid, agent_extension, disposition, hangup_reason, start_time, end_time, dnis, ani) VALUES ('$type','$uuid','$agent_name','$duration','$team_names','$talk_time','$callcenter_uuid','$agent_extension','$disposition','$hangup_reason','$start_time','$end_time','$dnis', '$ani')", 'ASSOC');
+
+                    foreach ($messages as $key => $value) {
+                        $entries[] = ["Id" => $value['MessageId'], "ReceiptHandle" => $value['ReceiptHandle']];
+                    }
+
+                    $deletedResults = $client->deleteMessageBatch(["QueueUrl" => $queueUrl, "Entries" => $entries]);
+
+                    if ($deletedResults['Successful']) {
+                        foreach ($deletedResults['Successful'] as $success) {
+                            $success_msg = sprintf("Deleting message succeeded id = %s ", $success['Id']);
+                            echo $success_msg . "\n\n";
+                        }
+                    }
+
+                    if ($deletedResults['Failed']) {
+                        foreach ($deletedResults['Failed'] as $failed) {
+                            $myfile = fopen("not_deleted_messages.txt", "w");
+                            $txt = sprintf("Deleting message failed, code = %s, id = %s, msg = %s, senderfault = %s", $failed['Code'], $failed['Id'], $failed['Message'], $failed['SenderFault']);
+                            fwrite($myfile, $txt);
+                            fclose($myfile);
+
+                        }
+                        throw new \RuntimeException("Cannot delete some messages, consult log for more info!");
+                    }
+                    
                 }
             }
 
