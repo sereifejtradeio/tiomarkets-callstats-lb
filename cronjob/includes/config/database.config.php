@@ -1,8 +1,7 @@
 <?php
 define('DB_TYPE', 'mysql');
 define('DB_HOST', 'eu-cdbr-west-03.cleardb.net');
-//define('DB_HOST', 'ec2-54-93-106-166.eu-central-1.compute.amazonaws.com');
-define('DB_USERNAME', 'bdbf60d53523c0');
-define('DB_PASSWORD', '2bef858d');
-define('DB_NAME', 'heroku_dbaf0dd5a000254');
+define('DB_USERNAME', 'b29a0a9071b63d');
+define('DB_PASSWORD', 'd420a826');
+define('DB_NAME', 'heroku_00410929162a0f1');
 ?>
