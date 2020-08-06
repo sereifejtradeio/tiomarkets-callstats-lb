@@ -39,7 +39,7 @@ try {
     ));
 
     $db->query("TRUNCATE TABLE heroku_00410929162a0f1.sales_call_stats;", 'ASSOC');
-    $entries = [];
+
 
     while ($queueSize['Attributes']['ApproximateNumberOfMessages'] > 0) {
 
@@ -70,6 +70,8 @@ try {
                 if(empty($call_exists)) {
                     $db->query("INSERT INTO sales_call_stats (type, uuid, agent_name, duration, team_names, talk_time, callcenter_uuid, agent_extension, disposition, hangup_reason, start_time, end_time, dnis, ani) VALUES ('$type','$uuid','$agent_name','$duration','$team_names','$talk_time','$callcenter_uuid','$agent_extension','$disposition','$hangup_reason','$start_time','$end_time','$dnis', '$ani')", 'ASSOC');
 
+                    $entries = [];
+                    
                     foreach ($messages as $key => $value) {
                         $entries[] = ["Id" => $value['MessageId'], "ReceiptHandle" => $value['ReceiptHandle']];
                     }
