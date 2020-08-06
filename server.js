@@ -46,7 +46,7 @@ wss.on('connection', (ws) => {
     }, 1000);
 
     execPHP.parseFile('process.php',function(phpResult) {
-        console.log(phpResult);
+
         if(phpResult) {
             wss.clients.forEach((client) => {
                 // if (client !== ws && client.readyState === WebSocket.OPEN) {
@@ -59,7 +59,7 @@ wss.on('connection', (ws) => {
 
     setInterval(() => {
         execPHP.parseFile('process.php',function(phpResult) {
-            console.log(phpResult);
+
             if(phpResult) {
                 wss.clients.forEach((client) => {
                     // if (client !== ws && client.readyState === WebSocket.OPEN) {
