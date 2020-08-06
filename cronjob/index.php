@@ -31,6 +31,7 @@ try {
         'MessageAttributeNames' => ['All'],
         'QueueUrl' => $queueUrl, // REQUIRED
         'WaitTimeSeconds' => 20,
+        'VisibilityTimeout' => 90
     ));
 
     $queueSize = $client->getQueueAttributes(array(
@@ -38,75 +39,41 @@ try {
         'QueueUrl' => $queueUrl
     ));
 
-    $db->query("TRUNCATE TABLE heroku_00410929162a0f1.sales_call_stats;", 'ASSOC');
+    $db->query("DELETE FROM heroku_00410929162a0f1.sales_call_stats WHERE FROM_UNIXTIME(start_time, '%Y-%m-%d') < DATE_FORMAT(NOW(), '%Y-%m-%d');", 'ASSOC');
 
+    $messages = $result->get('Messages');
 
-    while ($queueSize['Attributes']['ApproximateNumberOfMessages'] > 0) {
+    foreach ($messages as $message) {
 
-        $messages = $result->get('Messages');
+        $messageBody = json_decode($message['Body'], true);
+        $type = $messageBody['type'];
+        $uuid = $messageBody['uuid'];
+        $agent_name = $messageBody['agent_name'];
+        $duration = $messageBody['duration'];
+        $team_names = $messageBody['team_names'];
+        $talk_time = $messageBody['talk_time'];
+        $callcenter_uuid = $messageBody['callcenter_uuid'];
+        $agent_extension = $messageBody['agent_extension'];
+        $disposition = $messageBody['disposition'];
+        $hangup_reason = $messageBody['hangup_reason'];
+        $start_time = $messageBody['start_time'];
+        $end_time = $messageBody['end_time'];
+        $dnis = $messageBody['dnis'];
+        $ani = $messageBody['ani'];
 
-        for ($j = 0; $j < count($messages); $j++) {
+        $deleteParams = [
+            'QueueUrl' => $queueUrl,
+            'ReceiptHandle' => $message['ReceiptHandle']
+        ];
 
-            $agents[$j] = json_decode($messages[$j]['Body'], true);
+        //if( date("Y-m-d", $start_time) >= date("Y-m-d") ) {
+            $call_exists = $db->getRow("SELECT * FROM sales_call_stats WHERE type = '$type' AND uuid = '$uuid' AND agent_name = '$agent_name' AND duration = '$duration' AND team_names = '$team_names' AND talk_time = '$talk_time' AND callcenter_uuid = '$callcenter_uuid' AND agent_extension = '$agent_extension' AND disposition = '$disposition' AND hangup_reason = '$hangup_reason' AND start_time = '$start_time' AND end_time = '$end_time' AND dnis = '$dnis' AND ani = '$ani'", 'ASSOC');
 
-            $type = $agents[$j]['type'];
-            $uuid = $agents[$j]['uuid'];
-            $agent_name = $agents[$j]['agent_name'];
-            $duration = $agents[$j]['duration'];
-            $team_names = $agents[$j]['team_names'];
-            $talk_time = $agents[$j]['talk_time'];
-            $callcenter_uuid = $agents[$j]['callcenter_uuid'];
-            $agent_extension = $agents[$j]['agent_extension'];
-            $disposition = $agents[$j]['disposition'];
-            $hangup_reason = $agents[$j]['hangup_reason'];
-            $start_time = $agents[$j]['start_time'];
-            $end_time = $agents[$j]['end_time'];
-            $dnis = $agents[$j]['dnis'];
-            $ani = $agents[$j]['ani'];
-
-            if( date("Y-m-d", $agents[$j]['start_time']) >= date("Y-m-d") ) {
-                $call_exists = $db->getRow("SELECT * FROM sales_call_stats WHERE type = '$type' AND uuid = '$uuid' AND agent_name = '$agent_name' AND duration = '$duration' AND team_names = '$team_names' AND talk_time = '$talk_time' AND callcenter_uuid = '$callcenter_uuid' AND agent_extension = '$agent_extension' AND disposition = '$disposition' AND hangup_reason = '$hangup_reason' AND start_time = '$start_time' AND end_time = '$end_time' AND dnis = '$dnis' AND ani = '$ani'", 'ASSOC');
-                
-                if(empty($call_exists)) {
-                    $db->query("INSERT INTO sales_call_stats (type, uuid, agent_name, duration, team_names, talk_time, callcenter_uuid, agent_extension, disposition, hangup_reason, start_time, end_time, dnis, ani) VALUES ('$type','$uuid','$agent_name','$duration','$team_names','$talk_time','$callcenter_uuid','$agent_extension','$disposition','$hangup_reason','$start_time','$end_time','$dnis', '$ani')", 'ASSOC');
-
-                    $entries = [];
-                    
-                    foreach ($messages as $key => $value) {
-                        $entries[] = ["Id" => $value['MessageId'], "ReceiptHandle" => $value['ReceiptHandle']];
-                    }
-
-                    $deletedResults = $client->deleteMessageBatch(["QueueUrl" => $queueUrl, "Entries" => $entries]);
-
-                    if ($deletedResults['Successful']) {
-                        foreach ($deletedResults['Successful'] as $success) {
-                            $success_msg = sprintf("Deleting message succeeded id = %s ", $success['Id']);
-                            echo $success_msg . "\n\n";
-                        }
-                    }
-
-                    if ($deletedResults['Failed']) {
-                        foreach ($deletedResults['Failed'] as $failed) {
-                            $myfile = fopen("not_deleted_messages.txt", "w");
-                            $txt = sprintf("Deleting message failed, code = %s, id = %s, msg = %s, senderfault = %s", $failed['Code'], $failed['Id'], $failed['Message'], $failed['SenderFault']);
-                            fwrite($myfile, $txt);
-                            fclose($myfile);
-
-                        }
-                        throw new \RuntimeException("Cannot delete some messages, consult log for more info!");
-                    }
-
-                }
+            if(empty($call_exists)) {
+                $db->query("INSERT INTO sales_call_stats (type, uuid, agent_name, duration, team_names, talk_time, callcenter_uuid, agent_extension, disposition, hangup_reason, start_time, end_time, dnis, ani) VALUES ('$type','$uuid','$agent_name','$duration','$team_names','$talk_time','$callcenter_uuid','$agent_extension','$disposition','$hangup_reason','$start_time','$end_time','$dnis', '$ani')", 'ASSOC');
+                $deleteResult = $client->deleteMessage($deleteParams);
             }
-
-//            if (!array_key_exists($agents[$j]['agent_name'], $agents_formatted) && $agents[$j]['agent_name'] != '') {
-//                $agents_formatted[$agents[$j]['agent_name']][] = json_decode($messages[$j]['Body'], true);
-//            } else {
-//                if ($agents[$j]['agent_name'] != '') {
-//                    $agents_formatted[$agents[$j]['agent_name']][$j + 1] = json_decode($messages[$j]['Body'], true);
-//                }
-//            }
-        }
+        //}
 
     }
 
