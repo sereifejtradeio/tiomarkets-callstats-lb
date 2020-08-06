@@ -7,7 +7,7 @@ $db = new database(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME, 1);
 
 $agents = array();
 
-$calls_results = $db->getResults("select * from heroku_dbaf0dd5a000254.Daily_Calls_report order by  Dials desc;", 'ASSOC');
+$calls_results = $db->getResults("select * from heroku_00410929162a0f1.Daily_Calls_report order by  Dials desc;", 'ASSOC');
 
 if(!empty($calls_results)) {
     for($i=0; $i < count($calls_results); $i++) {
