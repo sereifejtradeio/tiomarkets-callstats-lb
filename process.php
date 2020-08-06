@@ -1,6 +1,6 @@
 <?php
-include_once('/app/includes/config/database.config.php');
-include_once('/app/includes/classes/database.class.php');
+include_once('includes/config/database.config.php');
+include_once('includes/classes/database.class.php');
 
 // Initialize the database class, and create an object
 $db = new database(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME, 1);
