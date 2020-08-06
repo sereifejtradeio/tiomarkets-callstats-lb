@@ -38,7 +38,7 @@ try {
         'QueueUrl' => $queueUrl
     ));
 
-    $db->query("TRUNCATE sales_call_stats;", 'ASSOC');
+    $db->query("TRUNCATE TABLE heroku_00410929162a0f1.sales_call_stats;", 'ASSOC');
     $entries = [];
 
     while ($queueSize['Attributes']['ApproximateNumberOfMessages'] > 0) {
