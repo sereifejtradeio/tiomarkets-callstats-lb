@@ -32,41 +32,41 @@ const server = express()
     .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 const wss = new SocketServer({ server });
-console.log(wss);
+
 wss.on('connection', (ws) => {
     console.log('Client connected');
     ws.on('close', () => console.log('Client disconnected'));
     
-    setInterval(() => {
-        wss.clients.forEach((client) => {
-            client.send(JSON.stringify(new Date().toTimeString()));
-        });
-    }, 1000);
-
-    execPHP.parseFile('process.php',function(phpResult) {
-        console.log(phpResult);
-        if(phpResult) {
-            wss.clients.forEach((client) => {
-                // if (client !== ws && client.readyState === WebSocket.OPEN) {
-                //     client.send(phpResult);
-                // }
-                client.send(phpResult);
-            });
-        }
-    });
-
-    setInterval(() => {
-        execPHP.parseFile('process.php',function(phpResult) {
-            console.log(phpResult);
-            if(phpResult) {
-                wss.clients.forEach((client) => {
-                    // if (client !== ws && client.readyState === WebSocket.OPEN) {
-                    //     client.send(phpResult);
-                    // }
-                    client.send(phpResult);
-                });
-            }
-        });
-
-    }, 900000); //15 Minutes
+    // setInterval(() => {
+    //     wss.clients.forEach((client) => {
+    //         client.send(JSON.stringify(new Date().toTimeString()));
+    //     });
+    // }, 1000);
+    //
+    // execPHP.parseFile('process.php',function(phpResult) {
+    //     console.log(phpResult);
+    //     if(phpResult) {
+    //         wss.clients.forEach((client) => {
+    //             // if (client !== ws && client.readyState === WebSocket.OPEN) {
+    //             //     client.send(phpResult);
+    //             // }
+    //             client.send(phpResult);
+    //         });
+    //     }
+    // });
+    //
+    // setInterval(() => {
+    //     execPHP.parseFile('process.php',function(phpResult) {
+    //         console.log(phpResult);
+    //         if(phpResult) {
+    //             wss.clients.forEach((client) => {
+    //                 // if (client !== ws && client.readyState === WebSocket.OPEN) {
+    //                 //     client.send(phpResult);
+    //                 // }
+    //                 client.send(phpResult);
+    //             });
+    //         }
+    //     });
+    //
+    // }, 900000); //15 Minutes
 });
