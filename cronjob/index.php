@@ -67,7 +67,7 @@ try {
         ];
 
         //if( date("Y-m-d", $start_time) >= date("Y-m-d") ) {
-            $call_exists = $db->getRow("SELECT * FROM sales_call_stats WHERE type = '$type' AND uuid = '$uuid' AND agent_name = '$agent_name' AND duration = '$duration' AND team_names = '$team_names' AND talk_time = '$talk_time' AND callcenter_uuid = '$callcenter_uuid' AND agent_extension = '$agent_extension' AND disposition = '$disposition' AND hangup_reason = '$hangup_reason' AND start_time = '$start_time' AND end_time = '$end_time' AND dnis = '$dnis' AND ani = '$ani'", 'ASSOC');
+            $call_exists = $db->getRow("SELECT * FROM sales_call_stats WHERE uuid = '$uuid'", 'ASSOC');
 
             if(empty($call_exists)) {
                 $db->query("INSERT INTO sales_call_stats (type, uuid, agent_name, duration, team_names, talk_time, callcenter_uuid, agent_extension, disposition, hangup_reason, start_time, end_time, dnis, ani) VALUES ('$type','$uuid','$agent_name','$duration','$team_names','$talk_time','$callcenter_uuid','$agent_extension','$disposition','$hangup_reason','$start_time','$end_time','$dnis', '$ani')", 'ASSOC');
