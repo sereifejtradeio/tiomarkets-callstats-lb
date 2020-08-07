@@ -15,10 +15,10 @@ if(!empty($calls_results)) {
             'Agent' => $calls_results[$i]['Agent'],
             'Dials' => $calls_results[$i]['Dials'],
             'Pickups' => $calls_results[$i]['Pickups'],
-            'Effective_Calls_180s' => $calls_results[$i]['Effective Calls (180s)'],
+            'Effective_calls' => $calls_results[$i]['EFF.CALLS'],
             'Effective_Call_Ratio_D_C' => $calls_results[$i]['Effective Call Ratio (D/C)'],
-            'Average_effective_call_duration_180_seconds' => $calls_results[$i]['Average effective call duration (180 seconds)'],
-            'Total_EFFECTIVE_call_talk_time' => $calls_results[$i]['Total EFFECTIVE call talk time'],
+            'Average_effective_call_duration_min' => $calls_results[$i]['AVG. EFF.CALL DURATION(MIN)'],
+            'Total_EFFECTIVE_call_talk_time' => $calls_results[$i]['TOTAL EFF. TALK TIME'],
         );
     }
     echo json_encode($agents);
