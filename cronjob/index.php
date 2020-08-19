@@ -12,12 +12,15 @@ use Aws\Exception\AwsException;
 
 $queueUrl = "https://sqs.eu-central-1.amazonaws.com/707765823363/voiso";
 
+$ACCESS_KEY_ID = getenv('ACCESS_KEY_ID');
+$SECRET_ACCESS_KEY = getenv('SECRET_ACCESS_KEY');
+
 $client = new SqsClient([
     'version'     => 'latest',
     'region'      => 'eu-central-1',
     'credentials' => [
-        'key'    => 'AKIA2JSRBM6BUJYXEM4T',
-        'secret' => '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',
+        'key'    => $ACCESS_KEY_ID,
+        'secret' => $SECRET_ACCESS_KEY,
     ],
 ]);
 
