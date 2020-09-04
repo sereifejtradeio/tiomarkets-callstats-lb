@@ -23,4 +23,5 @@ if(!empty($calls_results)) {
     }
     echo json_encode($agents);
 }
+$db->disconnect();
 ?>
