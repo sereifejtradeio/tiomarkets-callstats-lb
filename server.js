@@ -70,5 +70,5 @@ wss.on('connection', (ws) => {
             }
         });
 
-    }, 720000); //12 Minutes
+    }, 3600000); //60 Minutes
 });
