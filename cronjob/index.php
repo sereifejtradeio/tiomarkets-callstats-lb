@@ -33,8 +33,8 @@ try {
         'MaxNumberOfMessages' => 10,
         'MessageAttributeNames' => ['All'],
         'QueueUrl' => $queueUrl, // REQUIRED
-        'WaitTimeSeconds' => 20,
-        'VisibilityTimeout' => 90
+        'WaitTimeSeconds' => 0
+        //'VisibilityTimeout' => 3600
     ));
 
     $queueSize = $client->getQueueAttributes(array(
