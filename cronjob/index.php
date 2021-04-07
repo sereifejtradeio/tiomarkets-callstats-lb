@@ -30,7 +30,7 @@ $agents_formatted = array();
 try {
     $result = $client->receiveMessage(array(
         'AttributeNames' => ['SentTimestamp'],
-        'MaxNumberOfMessages' => 500,
+        'MaxNumberOfMessages' => 10,
         'MessageAttributeNames' => ['All'],
         'QueueUrl' => $queueUrl, // REQUIRED
         'WaitTimeSeconds' => 0
