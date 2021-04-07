@@ -42,7 +42,7 @@ try {
         'QueueUrl' => $queueUrl
     ));
 
-    //$db->query("DELETE FROM heroku_00410929162a0f1.sales_call_stats WHERE FROM_UNIXTIME(start_time, '%Y-%m-%d') < DATE_FORMAT(NOW(), '%Y-%m-%d');", 'ASSOC');
+    $db->query("DELETE FROM heroku_00410929162a0f1.sales_call_stats WHERE FROM_UNIXTIME(start_time, '%Y-%m-%d') < DATE_FORMAT(NOW(), '%Y-%m-%d');", 'ASSOC');
 
     $messages = $result->get('Messages');
 
