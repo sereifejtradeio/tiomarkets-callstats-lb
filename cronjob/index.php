@@ -42,7 +42,7 @@ try {
         'QueueUrl' => $queueUrl
     ));
 
-    $db->query("DELETE FROM heroku_00410929162a0f1.sales_call_stats WHERE FROM_UNIXTIME(start_time, '%Y-%m-%d') < DATE_FORMAT(NOW(), '%Y-%m-%d');", 'ASSOC');
+    //$db->query("DELETE FROM heroku_00410929162a0f1.sales_call_stats WHERE FROM_UNIXTIME(start_time, '%Y-%m-%d') < DATE_FORMAT(NOW(), '%Y-%m-%d');", 'ASSOC');
 
     $messages = $result->get('Messages');
 
@@ -74,7 +74,7 @@ try {
 
             if(empty($call_exists)) {
                 $db->query("INSERT INTO sales_call_stats (type, uuid, agent_name, duration, team_names, talk_time, callcenter_uuid, agent_extension, disposition, hangup_reason, start_time, end_time, dnis, ani) VALUES ('$type','$uuid','$agent_name','$duration','$team_names','$talk_time','$callcenter_uuid','$agent_extension','$disposition','$hangup_reason','$start_time','$end_time','$dnis', '$ani')", 'ASSOC');
-                $deleteResult = $client->deleteMessage($deleteParams);
+                //$deleteResult = $client->deleteMessage($deleteParams);
             }
         //}
 
